@@ -18,3 +18,4 @@ Website quản lý mua bán hàng điện tử
 ## Công nghệ
 Sử dụng Django Framework & MySQL
 ## Thiết kế Database (E-R)
+![V,2](https://user-images.githubusercontent.com/70517132/111179891-15826380-85df-11eb-8035-ee5bd26fd51c.png)
