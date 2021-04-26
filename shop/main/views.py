@@ -17,7 +17,8 @@ def ProductListView(request, filter : str):
         raise Http404("The type does not exist")
 
     productType_list = Product.objects.values('productType').annotate(count = Count("productType")).order_by()
-    context = {'product_list' : product_list, 'product_type_list' : productType_list}
+    allProductCount = len(Product.objects.all())
+    context = {'product_list' : product_list, 'product_type_list' : productType_list, 'all_products_count': allProductCount}
 
     return render(request = request, template_name = 'product_list.html', context = context)
 

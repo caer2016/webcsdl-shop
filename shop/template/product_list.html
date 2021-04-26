@@ -10,6 +10,7 @@
         <h3 class="w3-wide"><b>LOGO</b></h3>
     </div>
     <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+        <a href="/products/all" class = "w3-bar-item w3-button">All ({{all_products_count}})</a>
         {% for product_type in product_type_list %}
             <a href="/products/{{product_type.productType}}" class="w3-bar-item w3-button">{{product_type.productType|title}} ({{product_type.count}})</a>
         <!-- </a>
@@ -54,7 +55,13 @@
         <p class="w3-right">
         <button class="fa fa-shopping-cart w3-button" style="background-color: #fff; border: none;"></button>
         <button class="fa fa-search w3-button" style="background-color: #fff; border: none;"></button>
-        <button class="w3-button w3-black w3-button w3-tiny">Sign in</button>
+        
+        {% if user.is_authenticated %}
+            <p>Hello, {{user.username}}! <a href = "{% url 'logout' %}">Logout</p></a>
+        {% else %}
+            <a href = "{% url 'login' %}"> <button class="w3-button w3-black w3-button w3-tiny">Sign in</button> </a>
+        {% endif %}
+
         </p>
     </header>
 
