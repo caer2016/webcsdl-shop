@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Count
 from .models import *
+from django.http import Http404
 
 # Create your views here.
 def index(request):
@@ -16,9 +17,11 @@ def ProductListView(request, filter : str):
     if len(product_list) == 0:
         raise Http404("The type does not exist")
 
-    productType_list = Product.objects.values('productType').annotate(count = Count("productType")).order_by()
-    allProductCount = len(Product.objects.all())
-    context = {'product_list' : product_list, 'product_type_list' : productType_list, 'all_products_count': allProductCount}
+    product_type_list = Product.objects.values('productType').annotate(count = Count("productType")).order_by()
+    all_products_count = len(Product.objects.all())
+    header = filter.capitalize()
+
+    context = {'product_list' : product_list, 'product_type_list' : product_type_list, 'all_products_count' : all_products_count, 'header' : header}
 
     return render(request = request, template_name = 'product_list.html', context = context)
 

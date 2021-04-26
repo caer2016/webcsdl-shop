@@ -1,0 +1,15 @@
+<!-- Top header -->
+<header class="w3-container w3-xlarge">
+    <p class="w3-left">{{header}}</p>
+    <p class="w3-right">
+    <button class="fa fa-shopping-cart w3-button" style="background-color: #fff; border: none;"></button>
+    <button class="fa fa-search w3-button" style="background-color: #fff; border: none;"></button>
+    
+    {% if user.is_authenticated %}
+        <p>Hello, {{user.username}}! <a href = "{% url 'logout' %}">Logout</p></a>
+    {% else %}
+        <a href = "{% url 'login' %}"> <button class="w3-button w3-black w3-button w3-tiny">Sign in</button> </a>
+    {% endif %}
+
+    </p>
+</header>
