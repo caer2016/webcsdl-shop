@@ -20,15 +20,6 @@ def register(request):
 
     else:
         form = UserCreationForm()
-        form.fields['username'].widget.attrs.update({
-            'placeholder': 'Username'
-        })
-        form.fields['password1'].widget.attrs.update({
-            'placeholder': 'Password'
-        })
-        form.fields['password2'].widget.attrs.update({
-            'placeholder': 'Confirm Password'
-        })
 
     context = { 'form': form } 
     return render(request, 'registration/register.html', context)

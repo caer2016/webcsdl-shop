@@ -79,37 +79,37 @@
 <body>
 
     {% if form.errors %}
-        <p>Could not login. Check if you typed username and password correctly</p>
+    <p>Could not login. Check if you typed username and password correctly</p>
     {% endif %}
 
     {% if user.is_authenticated %}
-        <p>You are already logged in</p>
-        <a href = "{% url 'index' %}"><button type="button" class="cancelbtn">Back</button></a>
+    <p>You are already logged in</p>
+    <a href="{% url 'index' %}"><button type="button" class="cancelbtn">Back</button></a>
     {% else %}
-        
-        <form action="{% url 'login' %}" method="post">
 
-            {% csrf_token %}
-            
-            <div class="imgcontainer">
-                <img src="img_avatar2.png" alt="Avatar" class="avatar">
-            </div>
+    <form action="{% url 'login' %}" method="post">
 
-            <div class="container">
-                <b>{{ form.username.label_tag }}</b>
-                {{ form.username }}
-                <b>{{ form.password.label_tag }}</b>
-                {{ form.password }}
+        {% csrf_token %}
 
-                <button type="submit">Login</button>
-            </div>
+        <div class="imgcontainer">
+            <img src="img_avatar2.png" alt="Avatar" class="avatar">
+        </div>
 
-            <div class="container" style="background-color:#f1f1f1">
-                <a href = "{% url 'index' %}"><button type="button" class="cancelbtn">Cancel</button></a>
-                <span class="psw">Forgot <a href="#">password?</a></span>
-                <span class="psw">Doesn't have an account? <a href="{% url 'register' %}">Register here</a></span>
-            </div>
-        </form>
+        <div class="container">
+            <b>{{ form.username.label_tag }}</b>
+            {{ form.username }}
+            <b>{{ form.password.label_tag }}</b>
+            {{ form.password }}
+
+            <button type="submit">Login</button>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <a href="{% url 'index' %}"><button type="button" class="cancelbtn">Cancel</button></a>
+            <!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
+            <span class="psw">Doesn't have an account? <a href="{% url 'register' %}">Register here</a></span>
+        </div>
+    </form>
     {% endif %}
 
 </body>
