@@ -77,21 +77,132 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
                 <div class="mani">Manipulation</div>
             </div>
 
-            <div class="main">
+            <div class="group">
+              <div class="main">
                 <div class="main-pro">
                   <div class="main-image"><img src="./Image/jeans1.jpg" style="width: auto; height: 10rem;"></div>
                     <div class="details">Ripped Skinny Jeans</div>
                     <div class="classify">Classify: Jeans</div>
                 </div>
 
-                <div class="main-unit"><b>$24.99</b></div>
+                <div class="main-unit">$<b class="m-unit">24.99</b></div>
 
                 <div class="main-quantity">
                   <button class="minus fa fa-minus"></button>
                   <input type="text" name="text" value="1" id="text-quanti">
                   <button class="plus fa fa-plus"></button>
                 </div>
+
+                <div class="main-money">$<b class="m-money">24.99</b></div>
+
+                <div class="main-mani">
+                  <button class="delete fa fa-trash"></button>
+                </div>
             </div>
+            </div>
+
+            <div class="group">
+              <div class="main">
+                <div class="main-pro">
+                  <div class="main-image"><img src="./Image/jeans2.jpg" style="width: auto; height: 10rem;"></div>
+                    <div class="details">Mega Ripped Jeans</div>
+                    <div class="classify">Classify: Jeans</div>
+                </div>
+  
+                <div class="main-unit">$<b class="m-unit">19.99</b></div>
+  
+                <div class="main-quantity">
+                  <button class="minus fa fa-minus"></button>
+                  <input type="text" name="text" value="1" id="text-quanti">
+                  <button class="plus fa fa-plus"></button>
+                </div>
+  
+                <div class="main-money">$<b class="m-money">24.99</b></div>
+  
+                <div class="main-mani">
+                  <button class="delete fa fa-trash"> </button>
+                </div>
+            </div>
+            </div>
+
+          <div class="group">
+            <div class="main">
+              <div class="main-pro">
+                <div class="main-image"><img src="./Image/jeans3.jpg" style="width: auto; height: 10rem;"></div>
+                  <div class="details">Washed Skinny Jeans</div>
+                  <div class="classify">Classify: Jeans</div>
+              </div>
+  
+              <div class="main-unit">$<b class="m-unit">20.50</b></div>
+  
+              <div class="main-quantity">
+                <button class="minus fa fa-minus"></button>
+                <input type="text" name="text" value="1" id="text-quanti">
+                <button class="plus fa fa-plus"></button>
+              </div>
+  
+              <div class="main-money">$<b class="m-money">24.99</b></div>
+  
+              <div class="main-mani">
+                <button class="delete fa fa-trash"></button>
+              </div>
+          </div>
+          </div>
+
+        <div class="group">
+          <div class="main">
+            <div class="main-pro">
+              <div class="main-image"><img src="./Image/jeans4.jpg" style="width: auto; height: 10rem;"></div>
+                <div class="details">Vintage Skinny Jeans</div>
+                <div class="classify">Classify: Jeans</div>
+            </div>
+  
+            <div class="main-unit">$<b class="m-unit">14.99</b></div>
+  
+            <div class="main-quantity">
+              <button class="minus fa fa-minus"></button>
+              <input type="text" name="text" value="1" id="text-quanti">
+              <button class="plus fa fa-plus"></button>
+            </div>
+  
+            <div class="main-money">$<b class="m-money">14.99</b></div>
+  
+            <div class="main-mani">
+              <button class="delete fa fa-trash"></button>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+      <script>
+        var value=document.getElementsByClassName("main-quantity");
+          var deleteTag=document.getElementsByClassName("main-mani");
+          var group=document.getElementsByClassName("group");
+          var unit = document.getElementsByClassName("m-unit")
+          var money = document.getElementsByClassName("m-money")
+         for(var i=0;i<value.length;++i)
+         {
+          ( function(){
+            var va=value[i].children[1];
+            var temp=value[i];
+            var g=group[i];
+            var tien =  unit[i].innerHTML
+            money[i].innerHTML = tien 
+            value[i].children[0].addEventListener("click",function(){
+              if(va.value > 1){
+                va.value--;
+                var x = va.value
+                console.log(typeof x)
+                money[i].innerHTML = tien * x
+              }
+            });
+            value[i].children[2].addEventListener("click",function(){va.value++;console.log(tien * va.value);money[i].value= tien * va.value});
+            deleteTag[i].children[0].addEventListener("click",function(){
+               g.innerHTML="";
+            });
+          }());
+         }
+      </script>
   </body>
 </html>
