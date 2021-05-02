@@ -1,1 +1,22 @@
+{{ customer.user.username }}
 {{ customer.address }}
+
+{% for notif in notification %}
+    <p>{{notif}}</p>
+{% endfor %}
+
+<p>Pending orders</p>
+{% for cart in pending_cart %}
+    
+    <p>{{cart.orderDate}}</p>
+    {% for item in cart.items %}
+        <p>{{item}}</p>
+    {% endfor %}
+    <p>{{cart.total}}</p>
+    <a href="{% url 'cancel' cart.id %}"><button type="button">Cancel</button></a>
+
+{% empty %}
+    <p>No pending orders</p>
+{% endfor %}
+
+<a href="{% url 'logout' %}"><button type="button">Logout</button></a>

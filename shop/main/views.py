@@ -101,3 +101,10 @@ def Checkout(request):
     cart.save()
 
     return render(request, 'checkout.html')
+
+def CancelCart(request, id):
+
+    cart = CustomerCartOrder.objects.get(id = id)
+    cart.delete()
+
+    return redirect('profile')

@@ -3,7 +3,7 @@ from django.http import Http404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
-from main.models import Customer
+from main.models import Customer, CartOrderIndividual, CustomerCartOrder
 
 # Create your views here.
 def register(request):
@@ -32,6 +32,20 @@ def register(request):
     context = { 'form': form } 
     return render(request, 'registration/register.html', context)
 
+class cartData:
+
+    def __init__(self, cart):
+        self.id = cart.id
+        self.orderDate = cart.orderDate
+        
+        self.items = []
+        self.total = 0
+
+        itemquery = CartOrderIndividual.objects.filter(cartOrder = cart)
+        for item in itemquery:
+            self.items.append(str(item.product.name) + 'x' + str(item.quantity))
+            self.total += item.quantity * item.product.unitPrice
+
 def profile(request, *args):
 
     try:
@@ -39,7 +53,11 @@ def profile(request, *args):
     except:
         raise Http404("Only customer can access this page")
 
-    context = {'customer': customer, 'notification' : args}
+    pending_cart = []
+    for cart in CustomerCartOrder.objects.filter(shippedDate__isnull=True):
+        pending_cart.append(cartData(cart))
+
+    context = {'customer': customer, 'notification' : args, 'pending_cart': pending_cart}
 
     return render(request, 'registration/profile.html', context)
 

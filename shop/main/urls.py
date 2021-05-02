@@ -10,4 +10,5 @@ urlpatterns = [
     path('cart', views.CartView, name = 'CartView'),
     path('checkout', views.Checkout, name = 'Checkout'),
     path('add/<int:id>', views.AddToCart, name = 'AddToCart'),
+    path('cancel/<int:id>', views.CancelCart, name = 'cancel'),
 ]
