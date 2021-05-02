@@ -19,15 +19,18 @@ class Customer(models.Model):
     user = models.OneToOneField(User, null = True, on_delete = models.CASCADE)
     address = models.CharField(max_length = 100)
 
+    def __str__(self):
+        return self.user.username
+
 
 class CustomerCartOrder(models.Model):
 
-    orderDate = models.DateTimeField(auto_now = True)
-    shippedDate = models.DateTimeField(auto_now = False)
+    orderDate = models.DateTimeField(auto_now = False, null = True)
+    shippedDate = models.DateTimeField(auto_now = False, null = True)
     customer = models.ForeignKey(Customer, null = True, on_delete = models.SET_NULL)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class ImportOrder(models.Model):

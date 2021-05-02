@@ -2,7 +2,7 @@
 <header class="w3-container w3-xlarge">
     <p class="w3-left">{{header}}</p>
     <p class="w3-right">
-        <button class="fa fa-shopping-cart w3-button" style="background-color: #fff; border: none;"></button>
+        <a href="{% url 'CartView' %}"><button class="fa fa-shopping-cart w3-button" style="background-color: #fff; border: none;"></button></a>
         <button class="fa fa-search w3-button" style="background-color: #fff; border: none;"></button>
 
         {% if user.is_authenticated %}

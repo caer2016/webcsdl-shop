@@ -1,1 +1,22 @@
-{{product.name}}
+{% extends "base.html" %}
+{% load static %}
+
+{% block additional_css %}
+{% endblock %}
+
+{% block content %}
+
+{% include 'component/sidebar.html' %}
+{% include 'component/topbar.html' %}
+
+{{product.name}} <br>
+{{product.productType}} <br>
+{{product.unitPrice}} <br>
+
+<form action="{% url 'AddToCart' product.id %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="quantity">
+    <button type="submit">Add To Cart</button>
+</form>
+
+{% endblock %}

@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
+    <title>Register</title>
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -94,12 +94,17 @@
             <b>{{ form.username.label_tag }}</b>
             {{ form.username }}
             {{form.username.help_text}}
+            <br>
+            <br>
             <b>{{ form.password1.label_tag }}</b>
             {{ form.password1 }}
             {{form.password1.help_text}}
             <b>{{ form.password2.label_tag }}</b>
             {{ form.password2 }}
-            {{form.password2.help_text}}
+            <br>
+            <br>
+            <label for="address"><b>Address</b></label>
+            <input type="text" name="address" required>
 
 
             <button type="submit">Register</button>
