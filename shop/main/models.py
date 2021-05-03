@@ -13,6 +13,22 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def stock(self):
+        total = 0
+
+        for order in ImportOrderIndividual.objects.filter(product = self):
+            total += order.quantity
+
+        for order in CartOrderIndividual.objects.filter(product = self):
+            total -= order.quantity
+
+        return total
+
+    @property
+    def totalValue(self):
+        return self.stock * float(self.unitPrice)
+
 
 class Customer(models.Model):
 
@@ -35,6 +51,8 @@ class CustomerCartOrder(models.Model):
 
 class ImportOrder(models.Model):
 
+    vendor = models.CharField(max_length = 50)
+    vendorPrice = models.DecimalField(max_digits=10, decimal_places=2)
     arrivedDate = models.DateTimeField(auto_now = True)
 
     def __str__(self):

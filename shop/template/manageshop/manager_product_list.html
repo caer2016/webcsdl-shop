@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block additional_css %}
+<link rel="stylesheet" href="{% static 'CSS/view.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% include "component/sidebar.html" %}
+{% include "component/topbar.html" %}
+
+<body>
+    <div class="row">
+
+        <div class="cart-header">
+            <a href="{% url 'ManagerProductListMode' 'name' %}"><div class="product">Product</a></div>
+            <a href="{% url 'ManagerProductListMode' 'unitPrice' %}"><div class="unit">Unit Price</a></div>
+            <div class="quantity">Quantity</a></div>
+            <div class="money">Amount Of Money</a></div>
+            <a href="{% url 'ManagerProductListMode' 'productType' %}"><div class="mani">Type</a></div>
+        </div>
+
+        {% for product in product_list %}
+        <div class="main">
+            <div class="main-pro">
+                <div class="main-image"><img src="{% static '/Image/'|add:product.imageName %}" style="width: auto; height: 10rem;"></div>
+                <div class="details">{{product.name}}</div>
+            </div>
+
+            <div class="main-unit"><b>${{product.unitPrice}}</b></div>
+
+            <div class="main-quantity">
+                <b id="text-quantity">{{product.stock}}</b>
+            </div>
+
+            <div class="main-money">$<b class="m-money">{{product.totalValue}}</b></div>
+
+            <div class="main-mani">
+                <div class="classify">{{product.productType|title}}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+{% endblock %}
