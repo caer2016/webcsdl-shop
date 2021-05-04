@@ -6,7 +6,11 @@ from django.utils.timezone import now
 
 # Create your views here.
 def index(request):
-    return redirect('/products/all')
+
+    if request.user.is_staff:
+        return redirect('/manage')
+    else:
+        return redirect('/products/all')
 
 def getSidebarInfo():
     product_type_list = Product.objects.values('productType').annotate(count = Count("productType")).order_by()
@@ -30,12 +34,22 @@ def ProductListView(request, filter : str):
 
     return render(request = request, template_name = 'product_list.html', context = context)
 
+def AddReview(request, id):
+    
+    if request.method=="POST":
+        product = Product.objects.get(id = id)
+        content = request.POST['review']
+        review = Review.objects.create(customer = request.user.customer, content = content, product = product)
+        review.save()
+    
+    return redirect('ProductDetail', id)
+
 def ProductDetailView(request, id):
 
     product = Product.objects.get(id=id)
     review_list = Review.objects.filter(product = product)
 
-    context = {'product': product, 'comment_list': review_list}
+    context = {'product': product, 'review_list': review_list, **getSidebarInfo()}
 
     return render(request, 'product_detail.html', context = context)
 

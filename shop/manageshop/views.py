@@ -6,12 +6,17 @@ from django.utils.timezone import now
 
 def ProductList(request, mode = 'name'):
 
+    if not request.user.is_staff:
+        return redirect('index')
+
     product_quantity_dict = {}
     product_list = Product.objects.all().order_by(mode)
     context = {'product_list' : product_list, **getSidebarInfo()}
     return render(request, 'manageshop/manager_product_list.html', context)
 
 def AddProduct(request):
+    if not request.user.is_staff:
+        return redirect('index')
 
     if request.method == "POST":
         name = request.POST['name']
@@ -28,6 +33,8 @@ def AddProduct(request):
     return render(request, 'manageshop/manager_add_product.html')
 
 def OrderList(request, mode = 'all'):
+    if not request.user.is_staff:
+        return redirect('index')
 
     if mode=='pending':
         orders = CustomerCartOrder.objects.filter(shippedDate__isnull = True).order_by('orderDate')
@@ -45,6 +52,8 @@ def OrderList(request, mode = 'all'):
     return render(request, 'manageshop/manager_order_list.html', context)
 
 def ConfirmOrder(request, id):
+    if not request.user.is_staff:
+        return redirect('index')
 
     order = CustomerCartOrder.objects.get(id = id)
     order.shippedDate = now()
@@ -53,6 +62,8 @@ def ConfirmOrder(request, id):
     return redirect('ManagerOrderList', all)
 
 def CancelOrder(request, id):
+    if not request.user.is_staff:
+        return redirect('index')
 
     order = CustomerCartOrder.objects.get(id = id)
     order.delete()
@@ -73,6 +84,8 @@ class importData:
             self.items.append(str(item.product.name + ' x ' + str(item.quantity)))
 
 def ImportList(request, mode):
+    if not request.user.is_staff:
+        return redirect('index')
     
     imports = ImportOrder.objects.all().order_by(mode)
     
@@ -85,12 +98,16 @@ def ImportList(request, mode):
     return render(request, 'manageshop/manager_import_list.html', context)
 
 def DeleteImport(request, id):
+    if not request.user.is_staff:
+        return redirect('index')
 
     importorder = ImportOrder.objects.get(id=id)
     importorder.delete()
     return redirect('ManagerImportList', 'arrivedDate')
 
 def AddImport(request):
+    if not request.user.is_staff:
+        return redirect('index')
 
     if request.method == "POST":
 

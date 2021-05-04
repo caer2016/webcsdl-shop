@@ -1,23 +1,108 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block additional_css %}
-{% endblock %}
-
 {% block content %}
 
 {% include 'component/sidebar.html' %}
 {% include 'component/topbar.html' %}
 
-{{product.name}} <br>
-{{product.productType}} <br>
-{{product.unitPrice}} <br>
 
-<form action="{% url 'AddToCart' product.id %}" method="post">
-    {% csrf_token %}
-    <input type="text" name="quantity">
-    <button type="submit">Add To Cart</button>
-</form>
+<div class="col">
+    <div class="single" style="display: block; margin-top: 4%; height: 550px;">
+        <div class="container" style="margin: 0 4%; float: left; width: 92%;">
+            <div class="imgpro" style="width: 276px; display: block;float: left;">
+                <img src="{{product.image.url}}" style="width:100%">
+            </div>
+
+            <div class="textpro" style="width: 500px; display: block; float: right;">
+                <h3 style="margin-bottom: 20px ; margin-top: 0;">{{product.name}}</h3>
+
+                <div class="description" style="margin: 30px 0;">
+                    <h5 style="margin-bottom: 20px;"> <i>Description</i> </h5>
+                    <p>{{product.details}}</p>
+                </div>
+
+                <div class="quantity">
+                    <h5>Quantity</h5>
+                    <style>
+                        .main-quantity {
+                            /* margin: 16px 20px; */
+                            display: block;
+                        }
+
+                        #text-quanti {
+                            width: 24px;
+                            text-align: center;
+                            height: 30px;
+                            /* margin: 40px 0; */
+                        }
+
+                        .minus {
+                            height: 30px;
+                        }
+
+                        .plus {
+                            height: 30px;
+                        }
+                    </style>
+                    <div class="main-quantity">
+                        <input type="text" name="quantity" value="1" id="text-quanti" style="width: 50px">
+                    </div>
+                </div>
+
+                <form action="{% url 'AddToCart' product.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="price" style="margin: 30px 0;">
+                        <h5 style="margin-bottom: 30px;">
+                            <i style="font-weight: bold;">${{product.unitPrice}}</i>
+                        </h5>
+
+                        <button type="submit" class="w3-button w3-black w3-button w3-tiny w3-medium">Add To
+                            Cart</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="comment" style="display: block; height: 350px; max-block-size: 1000px;">
+        <div class="review-header" style="margin: 0 4%;">
+            <h4>
+                <i>Reviews</i>
+            </h4>
+
+            {% for review in review_list %}
+            <div class="review-comment">
+
+                <div class="text-comment" style="display: block; float: left; width: 650px;">
+                    <a href="" style="font-weight: bold;">{{review.customer.user.username}}</a>
+                    <h6 style="margin: 6px 0;">{{review.date}}</h6>
+                    <p>{{review.content}}</p>
+                </div>
+            </div>
+            {% empty %}
+            <h6 style="margin: 6px 0;">No reviews</h6>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="comment" style="display: block; height: 500px; max-block-size: 1000px;">
+    <form action="{% url 'AddReview' product.id %}" method="POST">
+        {% csrf_token %}
+        <div id="addreviews" style="display: block; float: left; margin: 60px;">
+            <h4> <i>Add A Reviews</i> </h4>
+
+            <div class="text-comment" style="display: block; float: left; width: 650px;">
+                <input name="review" id="commentid" placeholder="Write Something...."
+                    style="width: 600px; height: 200px;"></textarea>
+            </div>
+
+            <button type="submit" class="w3-button w3-black w3-button w3-tiny w3-medium"
+                style="float: right; margin-right: 50px; margin-top: 10px;">Confirm</button>
+        </div>
+    </form>
+</div>
+
 
 {% include 'component/footer.html' %}
 {% endblock %}

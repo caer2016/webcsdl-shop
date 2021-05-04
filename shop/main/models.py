@@ -84,6 +84,7 @@ class Review(models.Model):
     
     customer = models.ForeignKey(Customer, null = False, on_delete = models.SET(get_sentinel_user))
     product = models.ForeignKey(Product, null = False, on_delete = models.CASCADE)
+    date = models.DateTimeField(auto_now = True, null = False)
     content = models.TextField()
 
     def __str__(self):
