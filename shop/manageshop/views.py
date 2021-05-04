@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from main.models import *
 from main.views import getSidebarInfo 
 from accounts.views import cartData
+from django.utils.timezone import now
 
 def ProductList(request, mode = 'name'):
 
@@ -43,24 +44,70 @@ def OrderList(request, mode = 'all'):
 
     return render(request, 'manageshop/manager_order_list.html', context)
 
+def ConfirmOrder(request, id):
+
+    order = CustomerCartOrder.objects.get(id = id)
+    order.shippedDate = now()
+    order.save()
+
+    return redirect('ManagerOrderList', all)
+
+def CancelOrder(request, id):
+
+    order = CustomerCartOrder.objects.get(id = id)
+    order.delete()
+
+    return redirect('ManagerOrderList', all)
+
+class importData:
+
+    def __init__(self, importcart):
+        self.id = importcart.id
+        self.arrivedDate = importcart.arrivedDate
+        self.vendor = importcart.vendor
+        self.price = importcart.vendorPrice
+
+        self.items = []
+        itemquery = ImportOrderIndividual.objects.filter(importOrder = importcart)
+        for item in itemquery:
+            self.items.append(str(item.product.name + ' x ' + str(item.quantity)))
+
 def ImportList(request, mode):
     
-    import_list = ImportOrder.objects.all().order_by(mode)
+    imports = ImportOrder.objects.all().order_by(mode)
+    
+    import_list = []
+    for importorder in imports:
+        import_list.append(importData(importorder))
+
     context = {'import_list' : import_list}
 
     return render(request, 'manageshop/manager_import_list.html', context)
+
+def DeleteImport(request, id):
+
+    importorder = ImportOrder.objects.get(id=id)
+    importorder.delete()
+    return redirect('ManagerImportList', 'arrivedDate')
 
 def AddImport(request):
 
     if request.method == "POST":
 
-        #CREATE IMPORT ORDER
+        vendor = request.POST['vendor']
+        vendorPrice = request.POST['vendorPrice']
+        importorder = ImportOrder.objects.create(vendor = vendor, vendorPrice = vendorPrice)
+        importorder.save()
         
         for key, value in request.POST.items():
-            if key != 'crsfmiddlewaretoken':
-                #ADD ITEM
-                pass
+            if value != 0 and key not in ['csrfmiddlewaretoken', 'vendor', 'vendorPrice']:
+                product = Product.objects.get(id = int(key))
+                item = ImportOrderIndividual.objects.create(importOrder = importorder, product = product, quantity = int(value))
+                item.save()
 
-        return render(request, 'manageshop/manager_add_import.html', {'notif': 'Added import order'})
+        context = {'product_list' : Product.objects.all().order_by('name'), 'notif': 'Added import order'}
+
+        return render(request, 'manageshop/manager_add_import.html', context)
     
-    return render(request, 'manageshop/maanger_add_import.html')
+    context = {'product_list' : Product.objects.all().order_by('name')}
+    return render(request, 'manageshop/manager_add_import.html', context)

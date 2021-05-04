@@ -6,6 +6,13 @@
 {% endblock %}
 
 {% block content %}
+
+{% include "component/manager_sidebar.html" %}
+
+{% if notif %}
+<p>{{notif}}</p>
+{% endif %}
+
 <div class="Product">
     <!-- thông tin sản phẩm -->
     <form action="{% url 'ManagerAddProduct' %}" method="POST" enctype='multipart/form-data'>

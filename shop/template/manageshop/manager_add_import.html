@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block additional_css %}
+<!-- <link rel="stylesheet" href="./CSS/add_product.css"> -->
+<link rel="stylesheet" href="{% static 'CSS/cart.css' %}">
+<!-- <link rel="stylesheet" href="./JS/add_product.js"> -->
+{% endblock %}
+
+
+{% block content %}
+
+{% include "component/manager_sidebar.html" %}
+
+{% if notif %}
+<p>{{notif}}</p>
+{% endif %}
+
+<div class="Product">
+
+    <form action="{% url 'ManagerImportProduct' %}" method="POST">
+        {% csrf_token %}
+        <div class="details">Vendor<br> <input type="text" name="vendor" id="vendor"></div>
+        <div class="details">Vendor Price<br> <input type="text" name="vendorPrice" id="vendor"></div>
+
+        <div class="row">
+            <div class="cart-header">
+                <div class="product">Product</div>
+                <div class="unit" style="width:15%">Classify</div>
+                <div class="quantity" style="width:8%">Quantity</div>
+            </div>
+
+
+            {% for product in product_list %}
+
+            <div class="group">
+                <div class="main">
+
+                    <div class="main-pro">
+                        <div class="main-image"><img src="{{product.image.url}}" style="width: auto; height: 10rem;">
+                        </div>
+                        <div class="details">{{product.name}}</div>
+                    </div>
+                    
+                    <div class="main-unit">{{product.productType|title}}</div>
+                    <div class="main-quantity">
+                        <input type="text" name="{{ product.id }}" value="0" id="text-quanti" style="width: 50px">
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+            <!-- nút submit -->
+            <div class="row">
+                <input type="submit" value="Submit">
+            </div>
+    </form>
+
+    <br>
+    <a href="{% url 'ManagerImportList' 'arrivedDate' %}">Cancel</a>
+</div>
+</div>
+
+{% endblock %}

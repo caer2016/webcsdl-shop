@@ -60,47 +60,32 @@
     }
 </style>
 
-<body>
-
 {% include "component/manager_sidebar.html" %}
 
+<body>
     <link rel="stylesheet" type="text/css"
         href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
     <div class="container bootdey">
         <div class="panel panel-default panel-order">
-            <div class="panel-heading"><strong>Order history</strong>
+            <div class="panel-heading"><strong>Import history</strong>
                 <div class="btn-group pull-right">
-                    <div class="btn-group"><button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                            data-toggle="dropdown">Filter history <i class="fa fa-filter"></i></button>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="{% url 'ManagerOrderList' 'all' %}">All orders</a></li>
-                            <li><a href="{% url 'ManagerOrderList' 'shipped' %}">Shipped orders</a></li>
-                            <li><a href="{% url 'ManagerOrderList' 'pending' %}">Pending orders</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
             <div class="panel-body">
-            {% for order in order_list %}
+            {% for import in import_list %}
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                                {% if order.shipped %}
-                                    <div class="pull-right"><label class="label label-info">shipped</label></div>
-                                {% else %}
-                                    <div class="pull-right"><label class="label label-danger">pending</label></div>
-                                {% endif %}
-                                <span><strong>Order {{order.id}}</strong></span>
-                                <br>${{order.total}}<br>
-                                {% for item in order.items %}
+                                <span><strong>Import Order {{import.id}}</strong></span>
+                                <br>${{import.price}}<br>
+                                {% for item in import.items %}
                                     <li>{{item}}</li>
                                 {% endfor %}
-                                <a data-placement="top" class="btn btn-success btn-xs glyphicon glyphicon-ok" href="{% url 'ManagerConfirmOrder' order.id %}" title="Confirm"></a>
-                                <a data-placement="top" class="btn btn-danger btn-xs glyphicon glyphicon-trash" href="{% url 'ManagerCancelOrder' order.id %}" title="Delete"></a>
+                                <a data-placement="top" class="btn btn-danger btn-xs glyphicon glyphicon-trash" href="{% url 'ManagerDeleteImport' import.id %}" title="Delete"></a>
                             </div>
-                            <div class="col-md-12">Order made on: {{order.orderDate}} by {{order.customer}}</div>
+                            <div class="col-md-12">Arrived at: {{import.arrivedDate}} from {{import.vendor}}</div>
                         </div>
                     </div>
                 </div>
