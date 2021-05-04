@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block additional_css %}
+<link rel="stylesheet" href="{% static 'CSS/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% include 'component/sidebar.html' %}
+{% include 'component/topbar.html' %}
+
+{% if updated_notif %}
+<p>Your cart was updated!</p>
+{% endif %}
+
+{% if orders %}
+
+<form action="{% url 'CartView' %}" method="post">
+  {% csrf_token %}
+  <div class="row">
+    <div class="cart-header">
+      <div class="product">Product</div>
+      <div class="unit">Unit Price</div>
+      <div class="quantity">Quantity</div>
+      <div class="money">Amount Of Money</div>
+      <div class="mani">Manipulation</div>
+    </div>
+
+    {% for item in orders %}
+
+    <div class="group">
+      <div class="main">
+
+        <div class="main-pro">
+          <div class="main-image"><img src="{{item.product.image.url}}"
+              style="width: auto; height: 10rem;"></div>
+          <div class="details">{{item.product.name}}</div>
+          <div class="classify">Classify: {{item.product.productType}}</div>
+        </div>
+
+        <div class="main-unit">$<b class="m-unit">{{item.product.unitPrice}}</b></div>
+
+        <div class="main-quantity">
+          <button type="button" class="minus fa fa-minus"></button>
+          <input type="text" name="{{ item.id }}" value="{{item.quantity}}" id="text-quanti">
+          <button type="button" class="plus fa fa-plus"></button>
+        </div>
+
+        <div class="main-money">$<b class="m-money"></b></div>
+
+        <div class="main-mani">
+          <button type="button" class="delete fa fa-trash"></button>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+    <button type="submit" class="buybutton w3-button w3-black w3-button w3-tiny">Save</button>
+    <a href="{% url 'Checkout' %}"><button type="button" class="buybutton w3-button w3-black w3-button w3-tiny">Buy</button></a>
+
+
+  </div>
+</form>
+
+{% else %}
+<p>No item in carts! <a href="{% url 'index' %}">Continue shopping!</a></p>
+{% endif %}
+
+<script>
+  var value = document.getElementsByClassName("main-quantity");
+  var deleteTag = document.getElementsByClassName("main-mani");
+  var group = document.getElementsByClassName("group");
+  var unit = document.getElementsByClassName("m-unit")
+  var money = document.getElementsByClassName("m-money")
+  for (var i = 0; i < value.length; ++i) {
+    (function () {
+      var va = value[i].children[1];
+      var temp = value[i];
+      var g = group[i];
+      var tien = unit[i].innerHTML
+      var moneyBlock = money[i];
+      moneyBlock.innerHTML = (tien * va.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+      value[i].children[0].addEventListener("click", function () {
+        if (va.value > 1) {
+          va.value--;
+          var x = va.value
+          console.log(typeof x)
+          moneyBlock.innerHTML = (tien * x).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+      });
+      value[i].children[2].addEventListener("click", function () { 
+        va.value++; 
+        console.log(tien * va.value); 
+        moneyBlock.innerHTML = (tien * va.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+      });
+      deleteTag[i].children[0].addEventListener("click", function () {
+        va.value = 0;
+        g.style.display = 'none';
+      });
+    }());
+  }
+</script>
+
+{% include 'component/footer.html' %}
+{% endblock %}
