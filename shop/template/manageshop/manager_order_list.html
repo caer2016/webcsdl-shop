@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<style type="text/css">
+    body {
+        background: #eee;
+    }
+
+    .panel-order .row {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .panel-order .row:last-child {
+        border: 0px;
+    }
+
+    .panel-order .row .col-md-1 {
+        text-align: center;
+        padding-top: 15px;
+    }
+
+    .panel-order .row .col-md-1 img {
+        width: 50px;
+        max-height: 50px;
+    }
+
+    .panel-order .row .row {
+        border-bottom: 0;
+    }
+
+    .panel-order .row .col-md-11 {
+        border-left: 1px solid #ccc;
+    }
+
+    .panel-order .row .row .col-md-12 {
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+
+    .panel-order .row .row .col-md-12:last-child {
+        font-size: 11px;
+        color: #555;
+        background: #efefef;
+    }
+
+    .panel-order .btn-group {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .panel-order .panel-body {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    .panel-order .panel-deading {
+        margin-bottom: 0;
+    }
+</style>
+
+<body>
+    <link rel="stylesheet" type="text/css"
+        href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+    <div class="container bootdey">
+        <div class="panel panel-default panel-order">
+            <div class="panel-heading"><strong>Order history</strong>
+                <div class="btn-group pull-right">
+                    <div class="btn-group"><button type="button" class="btn btn-default btn-xs dropdown-toggle"
+                            data-toggle="dropdown">Filter history <i class="fa fa-filter"></i></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="{% url 'ManagerOrderList' 'all' %}">All orders</a></li>
+                            <li><a href="{% url 'ManagerOrderList' 'shipped' %}">Shipped orders</a></li>
+                            <li><a href="{% url 'ManagerOrderList' 'pending' %}">Pending orders</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+            {% for order in order_list %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% if order.shipped %}
+                                    <div class="pull-right"><label class="label label-info">shipped</label></div>
+                                {% else %}
+                                    <div class="pull-right"><label class="label label-danger">pending</label></div>
+                                {% endif %}
+                                <span><strong>Order {{order.id}}</strong></span>
+                                <br>${{order.total}}<br>
+                                {% for item in order.items %}
+                                    <li>{{item}}</li>
+                                {% endfor %}
+                                <a data-placement="top" class="btn btn-success btn-xs glyphicon glyphicon-ok" href="#" title="Confirm"></a>
+                                <a data-placement="top" class="btn btn-danger btn-xs glyphicon glyphicon-trash" href="#" title="Delete"></a>
+                            </div>
+                            <div class="col-md-12">Order made on: {{order.orderDate}} by {{order.customer}}</div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <span>No order found</span>
+            {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript"></script>
+</body> 
+{% endblock %}

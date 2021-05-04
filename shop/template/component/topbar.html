@@ -3,7 +3,6 @@
     <p class="w3-left">{{header}}</p>
     <p class="w3-right">
         <a href="{% url 'CartView' %}"><button class="fa fa-shopping-cart w3-button" style="background-color: #fff; border: none;"></button></a>
-        <button class="fa fa-search w3-button" style="background-color: #fff; border: none;"></button>
         
         {% if user.is_authenticated %}
         <a href="{% url 'profile' %}"><button class="fa fa-user w3-button" style="background-color: #fff; border: none;"></button></a>

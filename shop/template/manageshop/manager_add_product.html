@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block additional_css %}
+<link rel="stylesheet" href="./CSS/add_product.css">
+<link rel="stylesheet" href="./JS/add_product.js">
+{% endblock %}
+
+{% block content %}
+<div class="Product">
+    <!-- thông tin sản phẩm -->
+    <form action="{% url 'ManagerAddProduct' %}" method="POST" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-25">
+            <label for="name">Name</label>
+        </div>
+        <div class="col-75">
+            <input type="text" name="name" placeholder="Enter Product's Name..">
+        </div>
+
+        <div class="col-25">
+            <label for="price">Unit Price</label>
+        </div>
+        <div class="col-75">
+            <input type="text" name="price" placeholder="Enter Product's Price..">
+        </div>
+
+
+        <div class="col-25">
+            <label for="description">Product Description</label>
+        </div>
+        <div class="col-75">
+            <textarea id="description" name="description" placeholder="Write something.."
+                style="height:200px"></textarea>
+        </div>
+
+        <div class="col-25">
+            <label for="classify">Classify</label>
+        </div>
+        <div class="col-75">
+            <select id="type" name="type">
+                <option value="shirts">Shirts</option>
+                <option value="dresses">Dresses</option>
+                <option value="jeans">Jeans</option>
+                <option value="jackets">Jackets</option>
+                <option value="gymwear">Gymwear</option>
+                <option value="blazers">Blazers</option>
+                <option value="shoes">Shoes</option>
+            </select>
+        </div>
+    </div>
+
+
+    <!-- thêm ảnh -->
+    <div class="add-image">
+        <div class="col-25"><span>Image of the product</span></div>
+
+        <div class="col-75">
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <input type='file' id="imageUpload" name="imageUpload" accept=".png, .jpg, .jpeg" />
+                    <label for="imageUpload"></label>
+                </div>
+                <div class="avatar-preview">
+                    <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- nút submit -->
+    <div class="row">
+        <input type="submit" value="Submit">
+    </div>
+    </form>
+
+    <br>
+    <a href="{% url 'ManagerProductList' %}">Cancel</a>
+</div>
+</div>
+
+{% endblock %}

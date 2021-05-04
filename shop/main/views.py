@@ -52,7 +52,7 @@ def getCart(user):
 
 def CartView(request):
 
-    cart = getCart(request.user)
+    cart = CustomerCartOrder.objects.filter(customer = request.user.customer, orderDate__isnull = True).order_by('-id').first()
     orders = CartOrderIndividual.objects.filter(cartOrder = cart)
 
     if request.method == 'POST':

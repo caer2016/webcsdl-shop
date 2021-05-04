@@ -33,7 +33,7 @@
       <div class="main">
 
         <div class="main-pro">
-          <div class="main-image"><img src="{% static '/Image/'|add:item.product.imageName %}"
+          <div class="main-image"><img src="{{item.product.image.url}}"
               style="width: auto; height: 10rem;"></div>
           <div class="details">{{item.product.name}}</div>
           <div class="classify">Classify: {{item.product.productType}}</div>
@@ -64,7 +64,7 @@
 </form>
 
 {% else %}
-<p>No item in carts! <a href="{% url 'index' %}">Continue shopping!</p></a>
+<p>No item in carts! <a href="{% url 'index' %}">Continue shopping!</a></p>
 {% endif %}
 
 <script>
@@ -102,4 +102,5 @@
   }
 </script>
 
+{% include 'component/footer.html' %}
 {% endblock %}

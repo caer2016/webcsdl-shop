@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from main.models import *
 from main.views import getSidebarInfo 
+from accounts.views import cartData
 
 def ProductList(request, mode = 'name'):
 
@@ -12,17 +13,33 @@ def ProductList(request, mode = 'name'):
 def AddProduct(request):
 
     if request.method == "POST":
-        # ADD PRODUCT LOGIC
+        name = request.POST['name']
+        price = request.POST['price']
+        desc = request.POST['description']
+        producttype = request.POST['type']
+        image = request.FILES['imageUpload']
+
+        product = Product.objects.create(name = name, unitPrice = price, image = image, productType = producttype, details = desc)
+        product.save()
+
         return render(request, 'manageshop/manager_add_product.html', {'notif': 'Added product'})
 
     return render(request, 'manageshop/manager_add_product.html')
 
-def OrderList(request, mode):
+def OrderList(request, mode = 'all'):
 
-    pending_cart_list = CustomerCartOrder.objects.filter(shippedDate__isnull = True).order_by(mode)
-    shipped_cart_list = CustomerCartOrder.objects.filter(shippedDate__isnull = False).order_by(mode)
+    if mode=='pending':
+        orders = CustomerCartOrder.objects.filter(shippedDate__isnull = True).order_by('orderDate')
+    elif mode == 'shipped':
+        orders = CustomerCartOrder.objects.filter(shippedDate__isnull = False).order_by('orderDate')
+    else:
+        orders = CustomerCartOrder.objects.all().order_by('orderDate')
 
-    context = {'pending_cart_list' : pending_cart_list, 'shipped_cart_list' : shipped_cart_list}
+    order_list = [] 
+    for order in orders:
+        order_list.append(cartData(order))
+
+    context = {'order_list' : order_list}
 
     return render(request, 'manageshop/manager_order_list.html', context)
 

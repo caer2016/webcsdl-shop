@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from main.models import Customer, CartOrderIndividual, CustomerCartOrder
+from main.views import getSidebarInfo
 
 # Create your views here.
 def register(request):
@@ -40,10 +41,13 @@ class cartData:
         
         self.items = []
         self.total = 0
+        self.customer = cart.customer.user.username
+        
+        self.shipped = (cart.shippedDate != None)
 
         itemquery = CartOrderIndividual.objects.filter(cartOrder = cart)
         for item in itemquery:
-            self.items.append(str(item.product.name) + 'x' + str(item.quantity))
+            self.items.append(str(item.product.name) + ' x ' + str(item.quantity))
             self.total += item.quantity * item.product.unitPrice
 
 def profile(request, *args):
@@ -54,10 +58,10 @@ def profile(request, *args):
         raise Http404("Only customer can access this page")
 
     pending_cart = []
-    for cart in CustomerCartOrder.objects.filter(shippedDate__isnull=True):
+    for cart in CustomerCartOrder.objects.filter(orderDate__isnull = False, shippedDate__isnull=True):
         pending_cart.append(cartData(cart))
 
-    context = {'customer': customer, 'notification' : args, 'pending_cart': pending_cart}
+    context = {'customer': customer, 'notification' : args, 'pending_cart': pending_cart, **getSidebarInfo()}
 
     return render(request, 'registration/profile.html', context)
 

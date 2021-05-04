@@ -28,7 +28,7 @@
     <a href="details/{{product.id}}">
         <div class="w3-col l3 s6">
             <div class="w3-container">
-                <img src="{% static '/Image/'|add:product.imageName %}" style="width:100%">
+                <img src="{{product.image.url}}" style="width:100%">
                 <p>{{product.name}}<br><b>${{product.unitPrice}}</b></p>
             </div>
         </div>
@@ -49,5 +49,5 @@
         </div> -->
 </div>
 
-
+{% include 'component/footer.html' %}
 {% endblock %}
